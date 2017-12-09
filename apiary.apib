@@ -18,7 +18,7 @@ A User object has the following attributes:
 
 Access and Control of Authorization.
 
-## Authentication [v1/auth{?name,password}]
+## Authentication [/v1/auth{?username,password,token}]
 
 Authorization Resource represents an authorization granted to the user. You can **only** access your own authorization.
 
@@ -31,12 +31,10 @@ The Authorization Resource has the following attribute:
 
 Get an Authentication token for operations later. It takes a JSON object containing a username and a password of as parament. If fails, the token should be empty.
 
-+ Request (application/json)
++ Parameters
+    - username : `VinaLx` (string, required) - User Name
+    - password : `vpass` (string, required) - User Password
 
-       {
-            "username":"VinaLx"
-            "password":"vpass"
-        }
 
 + Response 200 (application/json)
 
@@ -47,12 +45,10 @@ Get an Authentication token for operations later. It takes a JSON object contain
 
 ### Remove an Authorization [DELETE]
 
-+ Request (application/json)
+Remove an Authorization token from database.
 
-        {
-            "username":"VinaLx"
-            "password":"vpass"
-        }
++ Parameters
+    - token : `1a2b3c` (string, required) - Auth Token
 
 + Response 204
 
@@ -61,7 +57,7 @@ Get an Authentication token for operations later. It takes a JSON object contain
 
 Resources related to a users collection in the API.
 
-## Users Collection [/v1/users]
+## Users Collection [/v1/users{?token}]
   
 It contains the operations of users collection.
 
@@ -90,19 +86,12 @@ To create a new account. It takes a JSON object containing a username, a passwor
             "email":"VinaLx@mail2.sysu.edu.cn"
         }
 
-
-### Delete a User [DELETE /v1/users/{username}]
-
-To delete the user account with username from database.
-
-+ Response 204
-
-### List all Users [GET /v1/users{?token}]
+### List all Users [GET]
 
 To view all the users.
 
 + Parameters
-    - token : `1a2b3c` (string, optional) - Auth Token
+    - token : `1a2b3c` (string, required) - Auth Token
 
 + Response 200 (application/json)
 
@@ -121,3 +110,9 @@ To view all the users.
                 "email":"Jarvis@mail2.sysu.edu.cn"
             }
         ]
+   
+### Delete a User [DELETE /v1/users/{username}]
+
+To delete the user account with username from database.
+
++ Response 204
