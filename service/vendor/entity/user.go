@@ -2,10 +2,10 @@ package entity
 
 // User struct
 type User struct {
-	Username string
-	Password string
-	Email    string
-	Phone    string
+	Username string `json:"username"`
+	Password string `json:"-"`
+	Email    string `json:"email"`
+	Phone    string `json:"phone"`
 }
 
 // UserSlice ..

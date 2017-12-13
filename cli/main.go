@@ -15,8 +15,8 @@
 package main
 
 import (
-	"cli"
 	"model"
+	"cli"
 )
 
 func main() {

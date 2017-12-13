@@ -27,6 +27,7 @@ import (
 
 var cfgFile string
 var debug bool
+var BaseUrl string
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
@@ -54,6 +55,8 @@ func init() {
 
 	RootCmd.PersistentFlags().BoolP("debug", "d", false, "display log message")
 
+	RootCmd.PersistentFlags().StringP("baseUrl", "b", "http://0.0.0.0:8080", "Specify the server url.")
+
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
@@ -72,6 +75,8 @@ func initConfig() {
 	if !debug {
 		log.SetOutput(ioutil.Discard)
 	}
+
+	BaseUrl, _ = RootCmd.Flags().GetString("baseUrl")
 
 	if cfgFile != "" {
 		// Use config file from the flag.

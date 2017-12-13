@@ -37,7 +37,7 @@ var registerCmd = &cobra.Command{
 		phone, _ := com.Flags().GetString("phone")
 		checkEmpty("phone", phone)
 
-		cmd.Register(username, password, mail, phone)
+		cmd.Register(username, password, mail, phone, BaseUrl)
 	},
 }
 
@@ -52,7 +52,7 @@ var loginCmd = &cobra.Command{
 		password, _ := com.Flags().GetString("password")
 		checkEmpty("password", password)
 
-		cmd.Login(username, password)
+		cmd.Login(username, password, BaseUrl)
 	},
 }
 
@@ -61,7 +61,7 @@ var logoutCmd = &cobra.Command{
 	Short: "Logout",
 	Long: ``,
 	Run: func(com *cobra.Command, args []string) {
-		cmd.Logout()
+		cmd.Logout(BaseUrl)
 	},
 }
 
@@ -70,7 +70,7 @@ var listCmd = &cobra.Command{
 	Short: "list Users",
 	Long: `Using this command, you will get a list of users who have registered!`,
 	Run: func(com *cobra.Command, args []string) {
-		cmd.ShowUsers()
+		cmd.ShowUsers(BaseUrl)
 	},
 }
 
@@ -80,10 +80,22 @@ var deleteCmd = &cobra.Command{
 	Long: `Once you have deleted your account, you have no way to get it back!!!
 And all of information about you will be erased! That's you are dead!!!`,
 	Run: func(com *cobra.Command, args []string) {
-		cmd.DeleteUser()
+		username, _ := com.Flags().GetString("username")
+		checkEmpty("username", username)
+		cmd.DeleteUser(username, BaseUrl)
 	},
 }
 
+var infoCmd = &cobra.Command{
+	Use:   "info",
+	Short: "Show the information of your account.",
+	Long: `Show the detail information of your account`,
+	Run: func(com *cobra.Command, args []string) {
+		username, _ := com.Flags().GetString("username")
+		checkEmpty("username", username)
+		cmd.ShowInfo(username, BaseUrl)
+	},
+}
 
 func init() {
 	registerCmd.Flags().StringP("user", "u", "", "Username")
@@ -94,11 +106,16 @@ func init() {
 	loginCmd.Flags().StringP("user", "u", "", "Input username")
 	loginCmd.Flags().StringP("password", "p", "", "Input password")
 
+	infoCmd.Flags().StringP("username", "u", "", "username")
+
+	deleteCmd.Flags().StringP("username", "u", "", "username")
+
 	RootCmd.AddCommand(registerCmd)
 	RootCmd.AddCommand(loginCmd)
 	RootCmd.AddCommand(logoutCmd)
 	RootCmd.AddCommand(listCmd)
 	RootCmd.AddCommand(deleteCmd)
+	RootCmd.AddCommand(infoCmd)
 
 	// Here you will define your flags and configuration settings.
 
